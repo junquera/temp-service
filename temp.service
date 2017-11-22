@@ -1,20 +1,24 @@
 #!/bin/bash
+
+PROGRAM=@NAME@
+LOGFILE=@LOGFILE@
+
 start() {
-    /usr/local/bin/temp-monitor.sh &
-    echo $! > /var/run/temp-monitor.pid
+    /usr/bin/$PROGRAM >> $LOGFILE &
+    echo $! > /var/run/$PROGRAM.pid
 }
 
 stop() {
-    if [ ! -f /var/run/temp-monitor.pid ]; 
+    if [ ! -f /var/run/$PROGRAM.pid ];
     then
         echo "$0 isn't running"
         exit 1
     fi
-    kill -9 $(cat /var/run/temp-monitor.pid)        
+    kill -9 $(cat /var/run/temp-monitor.pid)
 }
 
-status {
-    if [ -f /var/run/temp-monitor.pid ];
+status() {
+    if [ -f /var/run/$PROGRAM.pid ];
     then
         echo "$0 service is running"
     else
