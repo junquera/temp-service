@@ -1,10 +1,15 @@
 #!/bin/bash
 
 log() {
-    echo "$(date +%T): $*"
+    echo "$(date +%T) $*"
 }
 
+gettemp() {
+  sensors | awk 'match($0, "\\+([0-9][0-9]\\.[0-9]).C",ary){ a[NR]=ary[1]} END{for(x in a){res += a[x]; count++} print res/count}' 2>/dev/null
+}
+
+log $(gettemp)
 while sleep 30;
 do
-    log $(sensors | awk 'match($0, "\\+([0-9][0-9]\\.[0-9]).C",ary){ a[NR]=ary[1]} END{for(x in a){res += a[x]; count++} print res/count}' 2>/dev/null)
+    log $(gettemp)
 done

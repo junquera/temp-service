@@ -1,0 +1,18 @@
+# Doc at https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/sect-managing_services_with_systemd-unit_files
+[Unit]
+Description=Service for loggin system temperature
+Requires=basic.target
+After=syslog.target basic.target
+
+[Service]
+Type=simple
+ExecStart=/etc/init.d/@NAME@ start
+ExecReload=/etc/init.d/@NAME@ restart
+ExecStop=/etc/init.d/@NAME@ stop
+PIDFile=/var/run/@NAME@.pid
+TimeoutStopSec=0
+
+UMask=007
+
+[Install]
+Alias=%NAME%.service
